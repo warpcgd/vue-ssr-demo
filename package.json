@@ -1,0 +1,25 @@
+{
+  "name": "vue-ssr-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/warpcgd/vue-ssr-demo.git"
+  },
+  "author": "lxc",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/warpcgd/vue-ssr-demo/issues"
+  },
+  "homepage": "https://github.com/warpcgd/vue-ssr-demo#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "vue": "^2.6.10",
+    "vue-server-renderer": "^2.6.10",
+    "vuex-router-sync": "^5.0.0"
+  }
+}
