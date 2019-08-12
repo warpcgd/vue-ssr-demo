@@ -1,29 +1,34 @@
-const server = require('express')()
 const Vue = require('vue')
-const fs = require('fs')
+const express = require('express')
+const server = express()
+const createRenderer = require('vue-server-renderer').createRenderer
+const app = require('./dist/server-bundle')
 
-const Renderer = require('vue-server-renderer').createRenderer()
+const renderer = createRenderer({
+  template: require('fs').readFileSync('./index.template.html', 'utf-8'),
+})
+
+server.use(express.static('dist'))
+
 
 server.get('*', (req, res) => {
-
-  const app = new Vue({
-    data: {
-      name: 'vue app~',
-      url: req.url
-    },
-    template: '<div>hello from {{name}}, and url is: {{url}}</div>'
-  })
   const context = {
-    title: 'SSR test#'
+    title: 'hello',
+    meta: `
+      <meta charset="utf8">
+    `
   }
-  Renderer.renderToString(app, context, (err, html) => {
+
+  renderer.renderToString(app.default(), context, (err, html) => {
     if (err) {
-      console.log(err)
-      res.status(500).end('server error')
+      res.status(500).end('Internal Server Error')
+      return
     }
-    res.end(html)
+
+    res.send(html)
   })
 })
 
-server.listen(4001)
-console.log('running at: http://localhost:4001')
+server.listen(8080, () => {
+  console.log(`server started at localhost:8080`)
+})
