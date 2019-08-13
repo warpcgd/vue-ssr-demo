@@ -16,7 +16,7 @@ export function createRouter() {
       {
         path: '/test',
         component: Test
-      },
+      }
     ]
   })
 }
