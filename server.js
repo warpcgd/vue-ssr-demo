@@ -8,7 +8,9 @@ const renderer = createRenderer({
   template: require('fs').readFileSync('./index.template.html', 'utf-8'),
 })
 
+// https://blog.csdn.net/mimikuer/article/details/78919349
 server.use(express.static('dist'))
+server.use('/dist', express.static('dist'))
 
 
 server.get('*', (req, res) => {
@@ -19,21 +21,25 @@ server.get('*', (req, res) => {
     `
   }
 
-  const app = createApp({
+  createApp({
     url: req.url
   })
+  .then(app => {
+    renderer.renderToString(app, context, (err, html) => {
+      if (err) {
+        if (err.code === 404) {
+           res.status(404).end('Page not found')
+         } else {
+           res.status(500).end('Internal Server Error')
+         }
+         return
+      }
 
-  renderer.renderToString(app, context, (err, html) => {
-    if (err) {
-      if (err.code === 404) {
-         res.status(404).end('Page not found')
-       } else {
-         res.status(500).end('Internal Server Error')
-       }
-       return
-    }
-
-    res.send(html)
+      res.send(html)
+    })
+  })
+  .catch(error => {
+    res.status(404).end('Page not found')
   })
 })
 
