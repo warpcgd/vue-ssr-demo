@@ -10,6 +10,10 @@ export function createRouter() {
     mode: 'history',
     routes: [
       {
+        path: '/',
+        component: Home
+      },
+      {
         path: '/home',
         component: Home
       },

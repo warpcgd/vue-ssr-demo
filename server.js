@@ -3,9 +3,14 @@ const express = require('express')
 const server = express()
 const createRenderer = require('vue-server-renderer').createRenderer
 const createApp = require('./dist/server-bundle').default
+const { createBundleRenderer } = require('vue-server-renderer')
 
-const renderer = createRenderer({
-  template: require('fs').readFileSync('./index.template.html', 'utf-8'),
+const template = require('fs').readFileSync('./index.template.html', 'utf-8')
+const serverBundle = require('./dist/vue-ssr-server-bundle.json')
+const clientManifest = require('./dist/vue-ssr-client-manifest.json')
+const renderer = createBundleRenderer(serverBundle, {
+  template,
+  clientManifest
 })
 
 server.use(express.static('dist'))
