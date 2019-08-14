@@ -13,15 +13,19 @@ const config = merge(base, {
   },
   mode: isProd ? 'production' : 'development',
   optimization: {
+    // extract webpack runtime & manifest to avoid vendor chunk hash changing
+    // on every build.
+    runtimeChunk: {
+      name: 'manifest',
+    },
+    // extract vendor chunks for better caching
     splitChunks: {
-      name: "manifest",
-      minChunks: Infinity
+      chunks: 'initial'
     }
   },
   plugins: [
     // strip dev-only code in Vue source
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
       'process.env.VUE_ENV': '"client"'
     }),
     new VueSSRClientPlugin()
